@@ -1,0 +1,75 @@
+create table Pessoa (
+id integer primary key,
+nome varchar(100) unique,
+endereco varchar(150),
+telefone varchar(20)
+)
+ select * from pessoa
+
+SELECT id, nome, endereco, telefone FROM Pessoa
+
+create table Carro (
+id integer primary key,
+modelo varchar(100) ,
+proprietario varchar(150),
+valor int,
+tipo varchar(20),
+vendido varchar(1) NULL
+)
+
+
+select * from carro
+
+SELECT id, modelo, proprietario, tipo, valor FROM Carro
+
+
+drop table Carro
+
+create table CarroVenda (
+id integer primary key,
+modelo varchar(100) ,
+proprietario varchar(150),
+valor int,
+tipo varchar(20)
+)
+
+
+select * from CarroVenda
+
+
+
+INSERT INTO CarroVenda (ID, modelo, PROPRIETARIO, tipo, valor ) VALUES ( 1,'asd','asd','asd',1000)
+
+
+UPDATE CarroVenda SET modelo = 'alt', proprietario = 'alt' ,tipo = 'alt', valor = 200 where id = 1
+
+
+
+
+CREATE TRIGGER tr_CarroVenda
+AFTER INSERT
+   ON CarroVenda FOR EACH ROW
+
+BEGIN
+
+   UPDATE     Carro
+ INNER JOIN CarroVenda ON Carro.id = CarroVenda.valor
+ SET        Carro.vendido = 's';
+
+END;
+
+
+
+
+
+CREATE TRIGGER tr_CancelaCarroVenda
+BEFORE DELETE
+   ON CarroVenda FOR EACH ROW
+
+BEGIN
+
+   UPDATE     Carro
+ INNER JOIN CarroVenda ON Carro.id = CarroVenda.valor
+ SET        Carro.vendido = '';
+
+END;
